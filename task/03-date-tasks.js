@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-    throw new Error('Not implemented');
+    return Date.parse(value);
 }
 
 /**
@@ -37,7 +37,7 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-    throw new Error('Not implemented');
+    return Date.parse(value);
 }
 
 
@@ -56,7 +56,14 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-    throw new Error('Not implemented');
+    if (date.getFullYear() % 4 != 0)
+        return false;
+    else if (date.getFullYear() % 100 != 0)
+        return true;
+    else if(date.getFullYear() % 400 != 0)
+        return false;
+    else
+        return true;
 }
 
 
@@ -76,7 +83,27 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-    throw new Error('Not implemented');
+    var elapsed = endDate - startDate;
+    var hh = Math.floor(elapsed / 3600000);
+    var mm = Math.floor((elapsed - hh*3600000) / 60000);
+    var ss = Math.floor((elapsed - hh*3600000 - mm*60000) / 1000)
+    var sss = Math.floor(elapsed - hh*3600000 - mm*60000 - ss*1000)
+    parseInt(hh);
+    parseInt(mm);
+    parseInt(ss);
+    parseInt(sss);
+    if (hh < 10)
+        hh = '0' + hh;
+    if (mm < 10)
+        mm = '0' + mm;
+    if (ss < 10)
+        ss = '0' + ss;
+    if (sss < 10)
+        sss = '00' + sss;
+    else if (sss < 100)
+        sss = '0' + sss;
+    var str = hh + ':' + mm + ':' + ss + '.' + sss;
+    return str;
 }
 
 
@@ -94,7 +121,14 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    var mod = 0.5*(60*date.getUTCHours() + date.getUTCMinutes()) - 6*date.getUTCMinutes();
+    mod %= 360;
+    if (mod < 0)
+        mod += 360;
+    else if (mod > 180)
+        mod = 360 - mod;
+    var angle = mod * Math.PI / 180;
+    return angle;
 }
 
 
